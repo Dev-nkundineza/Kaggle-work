@@ -1,0 +1,3207 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "e8609125",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:37.987630Z",
+     "iopub.status.busy": "2025-11-21T04:45:37.986754Z",
+     "iopub.status.idle": "2025-11-21T04:45:39.842868Z",
+     "shell.execute_reply": "2025-11-21T04:45:39.842101Z"
+    },
+    "papermill": {
+     "duration": 1.86668,
+     "end_time": "2025-11-21T04:45:39.844565",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:37.977885",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "\n",
+    "import warnings\n",
+    "warnings.filterwarnings(\"ignore\", category=RuntimeWarning)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "9ff9ccd8",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:39.859951Z",
+     "iopub.status.busy": "2025-11-21T04:45:39.859125Z",
+     "iopub.status.idle": "2025-11-21T04:45:39.865549Z",
+     "shell.execute_reply": "2025-11-21T04:45:39.864716Z"
+    },
+    "papermill": {
+     "duration": 0.015425,
+     "end_time": "2025-11-21T04:45:39.866946",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:39.851521",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['sales-data', 'dataset']"
+      ]
+     },
+     "execution_count": 2,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import os\n",
+    "os.listdir('/kaggle/input')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "df34e63d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:39.882103Z",
+     "iopub.status.busy": "2025-11-21T04:45:39.881504Z",
+     "iopub.status.idle": "2025-11-21T04:45:39.907267Z",
+     "shell.execute_reply": "2025-11-21T04:45:39.906466Z"
+    },
+    "papermill": {
+     "duration": 0.034989,
+     "end_time": "2025-11-21T04:45:39.908760",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:39.873771",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>name</th>\n",
+       "      <th>age</th>\n",
+       "      <th>city</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>david</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Kigali</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>jose</td>\n",
+       "      <td>30</td>\n",
+       "      <td>Biringa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>chris</td>\n",
+       "      <td>24</td>\n",
+       "      <td>Kabuga</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>prince</td>\n",
+       "      <td>35</td>\n",
+       "      <td>kanombe</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "     name  age     city\n",
+       "0   david   20   Kigali\n",
+       "1    jose   30  Biringa\n",
+       "2   chris   24   Kabuga\n",
+       "3  prince   35  kanombe"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data = [{'name': 'david', 'age': 20, 'city': 'Kigali'}, \n",
+    "        {'name': 'jose', 'age': 30, 'city': 'Biringa'},\n",
+    "       {'name': 'chris', 'age': 24, 'city': 'Kabuga'}, \n",
+    "        {'name': 'prince', 'age': 35, 'city': 'kanombe'}]\n",
+    "\n",
+    "df= pd.DataFrame(data)\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "f3d65506",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:39.925067Z",
+     "iopub.status.busy": "2025-11-21T04:45:39.924403Z",
+     "iopub.status.idle": "2025-11-21T04:45:39.933111Z",
+     "shell.execute_reply": "2025-11-21T04:45:39.932253Z"
+    },
+    "papermill": {
+     "duration": 0.018191,
+     "end_time": "2025-11-21T04:45:39.934489",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:39.916298",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>id</th>\n",
+       "      <th>name</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>jovan</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2</td>\n",
+       "      <td>peter</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3</td>\n",
+       "      <td>prince</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   id    name\n",
+       "0   1   jovan\n",
+       "1   2   peter\n",
+       "2   3  prince"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df2= pd.DataFrame({\n",
+    "    'id': [1,2,3],\n",
+    "    'name': ['jovan','peter','prince']\n",
+    "})\n",
+    "\n",
+    "df2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "773c7d1d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:39.950673Z",
+     "iopub.status.busy": "2025-11-21T04:45:39.949927Z",
+     "iopub.status.idle": "2025-11-21T04:45:39.960994Z",
+     "shell.execute_reply": "2025-11-21T04:45:39.960070Z"
+    },
+    "papermill": {
+     "duration": 0.02034,
+     "end_time": "2025-11-21T04:45:39.962322",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:39.941982",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>0</th>\n",
+       "      <th>1</th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0.571876</td>\n",
+       "      <td>0.643228</td>\n",
+       "      <td>0.987093</td>\n",
+       "      <td>0.463353</td>\n",
+       "      <td>0.128044</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>0.911090</td>\n",
+       "      <td>0.933415</td>\n",
+       "      <td>0.340415</td>\n",
+       "      <td>0.003006</td>\n",
+       "      <td>0.235227</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>0.602154</td>\n",
+       "      <td>0.078635</td>\n",
+       "      <td>0.630088</td>\n",
+       "      <td>0.923394</td>\n",
+       "      <td>0.929039</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>0.139002</td>\n",
+       "      <td>0.266538</td>\n",
+       "      <td>0.216925</td>\n",
+       "      <td>0.469717</td>\n",
+       "      <td>0.897696</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0.418379</td>\n",
+       "      <td>0.215209</td>\n",
+       "      <td>0.049410</td>\n",
+       "      <td>0.521145</td>\n",
+       "      <td>0.248770</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          0         1         2         3         4\n",
+       "0  0.571876  0.643228  0.987093  0.463353  0.128044\n",
+       "1  0.911090  0.933415  0.340415  0.003006  0.235227\n",
+       "2  0.602154  0.078635  0.630088  0.923394  0.929039\n",
+       "3  0.139002  0.266538  0.216925  0.469717  0.897696\n",
+       "4  0.418379  0.215209  0.049410  0.521145  0.248770"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df3 = pd.DataFrame(np.random.rand(20,5))\n",
+    "df3.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "33dec99f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:39.978326Z",
+     "iopub.status.busy": "2025-11-21T04:45:39.978009Z",
+     "iopub.status.idle": "2025-11-21T04:45:39.984501Z",
+     "shell.execute_reply": "2025-11-21T04:45:39.983673Z"
+    },
+    "papermill": {
+     "duration": 0.015994,
+     "end_time": "2025-11-21T04:45:39.985887",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:39.969893",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    1\n",
+       "1    2\n",
+       "2    3\n",
+       "3    4\n",
+       "4    5\n",
+       "5    6\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "list_object = [1,2,3,4,5,6]\n",
+    "pd.Series(list_object)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "85e72d2a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.001863Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.001124Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.006839Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.005965Z"
+    },
+    "papermill": {
+     "duration": 0.015104,
+     "end_time": "2025-11-21T04:45:40.008070",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:39.992966",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "name    object\n",
+      "age      int64\n",
+      "city    object\n",
+      "dtype: object\n",
+      "(4, 3)\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(df.dtypes)\n",
+    "print(df.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "bc1faee2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.023922Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.023326Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.027856Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.027034Z"
+    },
+    "papermill": {
+     "duration": 0.013834,
+     "end_time": "2025-11-21T04:45:40.029137",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.015303",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[6, 5, 4, 3, 2, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "list_object.sort(reverse=True)\n",
+    "print(list_object)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "38f835b0",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.044619Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.044231Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.051599Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.050744Z"
+    },
+    "papermill": {
+     "duration": 0.01684,
+     "end_time": "2025-11-21T04:45:40.053040",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.036200",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    20\n",
+       "1    30\n",
+       "2    24\n",
+       "3    35\n",
+       "Name: age, dtype: int64"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['age']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "8ed64cf1",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.069505Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.068665Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.077459Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.076516Z"
+    },
+    "papermill": {
+     "duration": 0.018482,
+     "end_time": "2025-11-21T04:45:40.078894",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.060412",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>name</th>\n",
+       "      <th>age</th>\n",
+       "      <th>city</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>david</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Kigali</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>jose</td>\n",
+       "      <td>30</td>\n",
+       "      <td>Biringa</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "    name  age     city\n",
+       "0  david   20   Kigali\n",
+       "1   jose   30  Biringa"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head(2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "f721178b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.095088Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.094537Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.111028Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.110201Z"
+    },
+    "papermill": {
+     "duration": 0.026141,
+     "end_time": "2025-11-21T04:45:40.112347",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.086206",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>name</th>\n",
+       "      <th>age</th>\n",
+       "      <th>city</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>david</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Kigali</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "    name  age    city\n",
+       "0  david   20  Kigali"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "chris_data = df.loc[[0],['name','age','city']]\n",
+    "chris_data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "0356338a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.129300Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.128546Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.142257Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.141467Z"
+    },
+    "papermill": {
+     "duration": 0.023739,
+     "end_time": "2025-11-21T04:45:40.143633",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.119894",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>name</th>\n",
+       "      <th>age</th>\n",
+       "      <th>city</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2025-10-01</th>\n",
+       "      <td>david</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Kigali</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2025-10-02</th>\n",
+       "      <td>jose</td>\n",
+       "      <td>30</td>\n",
+       "      <td>Biringa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2025-10-03</th>\n",
+       "      <td>chris</td>\n",
+       "      <td>24</td>\n",
+       "      <td>Kabuga</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2025-10-04</th>\n",
+       "      <td>prince</td>\n",
+       "      <td>35</td>\n",
+       "      <td>kanombe</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "              name  age     city\n",
+       "2025-10-01   david   20   Kigali\n",
+       "2025-10-02    jose   30  Biringa\n",
+       "2025-10-03   chris   24   Kabuga\n",
+       "2025-10-04  prince   35  kanombe"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "date_index = pd.date_range(start=\"2025-10-01\", end=\"2025-10-04\")\n",
+    "df.index = date_index\n",
+    "df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "56c68c1b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.160174Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.159817Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.170996Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.170207Z"
+    },
+    "papermill": {
+     "duration": 0.021148,
+     "end_time": "2025-11-21T04:45:40.172373",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.151225",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>name</th>\n",
+       "      <th>age</th>\n",
+       "      <th>city</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2025-10-04</th>\n",
+       "      <td>prince</td>\n",
+       "      <td>35</td>\n",
+       "      <td>kanombe</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2025-10-03</th>\n",
+       "      <td>chris</td>\n",
+       "      <td>24</td>\n",
+       "      <td>Kabuga</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2025-10-02</th>\n",
+       "      <td>jose</td>\n",
+       "      <td>30</td>\n",
+       "      <td>Biringa</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2025-10-01</th>\n",
+       "      <td>david</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Kigali</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "              name  age     city\n",
+       "2025-10-04  prince   35  kanombe\n",
+       "2025-10-03   chris   24   Kabuga\n",
+       "2025-10-02    jose   30  Biringa\n",
+       "2025-10-01   david   20   Kigali"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sorted_df = df.sort_index(ascending=False)\n",
+    "sorted_df "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "faab6fa4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.189270Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.188979Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.195607Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.194794Z"
+    },
+    "papermill": {
+     "duration": 0.016726,
+     "end_time": "2025-11-21T04:45:40.196896",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.180170",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "name     chris\n",
+       "age         24\n",
+       "city    Kabuga\n",
+       "Name: 2025-10-03 00:00:00, dtype: object"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "third_row_first = df.iloc[2,0:3]\n",
+    "third_row_first"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "94cd2d86",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007619,
+     "end_time": "2025-11-21T04:45:40.212557",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.204938",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "#  Data manipulation: sales dataset + visualization "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "444e8def",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.230784Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.230203Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.252594Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.251736Z"
+    },
+    "papermill": {
+     "duration": 0.033822,
+     "end_time": "2025-11-21T04:45:40.253913",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.220091",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(50, 6)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2023-01-01</td>\n",
+       "      <td>A</td>\n",
+       "      <td>28.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>754.0</td>\n",
+       "      <td>East</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2023-01-02</td>\n",
+       "      <td>B</td>\n",
+       "      <td>39.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>110.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2023-01-03</td>\n",
+       "      <td>C</td>\n",
+       "      <td>32.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>398.0</td>\n",
+       "      <td>East</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2023-01-04</td>\n",
+       "      <td>B</td>\n",
+       "      <td>8.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>522.0</td>\n",
+       "      <td>East</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2023-01-05</td>\n",
+       "      <td>B</td>\n",
+       "      <td>26.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>869.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         Date Category  Value   Product  Sales Region\n",
+       "0  2023-01-01        A   28.0  Product1  754.0   East\n",
+       "1  2023-01-02        B   39.0  Product3  110.0  North\n",
+       "2  2023-01-03        C   32.0  Product2  398.0   East\n",
+       "3  2023-01-04        B    8.0  Product1  522.0   East\n",
+       "4  2023-01-05        B   26.0  Product3  869.0  North"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "## read csv data\n",
+    "\n",
+    "sales_data = pd.read_csv('/kaggle/input/sales-data/data.csv')\n",
+    "print(sales_data.shape)\n",
+    "sales_data.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "7a419235",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.271908Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.271305Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.277634Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.276762Z"
+    },
+    "papermill": {
+     "duration": 0.016857,
+     "end_time": "2025-11-21T04:45:40.279084",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.262227",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Date         object\n",
+       "Category     object\n",
+       "Value       float64\n",
+       "Product      object\n",
+       "Sales       float64\n",
+       "Region       object\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# check the datatypes\n",
+    "sales_data.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "aa25ddaa",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.297851Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.297066Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.303842Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.303103Z"
+    },
+    "papermill": {
+     "duration": 0.017876,
+     "end_time": "2025-11-21T04:45:40.305229",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.287353",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Date        0\n",
+       "Category    0\n",
+       "Value       3\n",
+       "Product     0\n",
+       "Sales       4\n",
+       "Region      0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# check the missing values\n",
+    "sales_data.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "df591a61",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.323035Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.322724Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.331392Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.330407Z"
+    },
+    "papermill": {
+     "duration": 0.019285,
+     "end_time": "2025-11-21T04:45:40.332787",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.313502",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# convert Date into datetime datatype\n",
+    "sales_data['Date'] = pd.to_datetime(sales_data['Date'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "3157fd4e",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.351023Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.350214Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.356582Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.355892Z"
+    },
+    "papermill": {
+     "duration": 0.016906,
+     "end_time": "2025-11-21T04:45:40.357880",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.340974",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Date        datetime64[ns]\n",
+       "Category            object\n",
+       "Value              float64\n",
+       "Product             object\n",
+       "Sales              float64\n",
+       "Region              object\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sales_data.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "1b84a540",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.376057Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.375455Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.381846Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.381157Z"
+    },
+    "papermill": {
+     "duration": 0.016992,
+     "end_time": "2025-11-21T04:45:40.383152",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.366160",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    2023\n",
+       "1    2023\n",
+       "2    2023\n",
+       "3    2023\n",
+       "4    2023\n",
+       "Name: Date, dtype: int32"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sales_data['Date'].dt.year.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "618adac4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.401573Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.401020Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.410341Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.409491Z"
+    },
+    "papermill": {
+     "duration": 0.020217,
+     "end_time": "2025-11-21T04:45:40.411824",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.391607",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Category</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>754.0</td>\n",
+       "      <td>A</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>110.0</td>\n",
+       "      <td>B</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>398.0</td>\n",
+       "      <td>C</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>522.0</td>\n",
+       "      <td>B</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>869.0</td>\n",
+       "      <td>B</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Sales Category\n",
+       "0  754.0        A\n",
+       "1  110.0        B\n",
+       "2  398.0        C\n",
+       "3  522.0        B\n",
+       "4  869.0        B"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# select only 'sales, Category' columns\n",
+    "sales_data[['Sales','Category']].head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "177395c5",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.430795Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.429990Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.442715Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.441860Z"
+    },
+    "papermill": {
+     "duration": 0.023566,
+     "end_time": "2025-11-21T04:45:40.444151",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.420585",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2023-01-02</td>\n",
+       "      <td>B</td>\n",
+       "      <td>39.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>110.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2023-01-05</td>\n",
+       "      <td>B</td>\n",
+       "      <td>26.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>869.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>2023-01-11</td>\n",
+       "      <td>B</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>842.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>15</th>\n",
+       "      <td>2023-01-16</td>\n",
+       "      <td>C</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>895.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>22</th>\n",
+       "      <td>2023-01-23</td>\n",
+       "      <td>B</td>\n",
+       "      <td>62.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>942.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>26</th>\n",
+       "      <td>2023-01-27</td>\n",
+       "      <td>C</td>\n",
+       "      <td>71.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>619.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>27</th>\n",
+       "      <td>2023-01-28</td>\n",
+       "      <td>C</td>\n",
+       "      <td>56.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>224.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>28</th>\n",
+       "      <td>2023-01-29</td>\n",
+       "      <td>B</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>617.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>37</th>\n",
+       "      <td>2023-02-07</td>\n",
+       "      <td>C</td>\n",
+       "      <td>2.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>NaN</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>48</th>\n",
+       "      <td>2023-02-18</td>\n",
+       "      <td>C</td>\n",
+       "      <td>65.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>182.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>49</th>\n",
+       "      <td>2023-02-19</td>\n",
+       "      <td>C</td>\n",
+       "      <td>11.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>708.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         Date Category  Value   Product  Sales Region\n",
+       "1  2023-01-02        B   39.0  Product3  110.0  North\n",
+       "4  2023-01-05        B   26.0  Product3  869.0  North\n",
+       "10 2023-01-11        B    7.0  Product1  842.0  North\n",
+       "15 2023-01-16        C    NaN  Product1  895.0  North\n",
+       "22 2023-01-23        B   62.0  Product3  942.0  North\n",
+       "26 2023-01-27        C   71.0  Product2  619.0  North\n",
+       "27 2023-01-28        C   56.0  Product2  224.0  North\n",
+       "28 2023-01-29        B    NaN  Product3  617.0  North\n",
+       "37 2023-02-07        C    2.0  Product1    NaN  North\n",
+       "48 2023-02-18        C   65.0  Product3  182.0  North\n",
+       "49 2023-02-19        C   11.0  Product3  708.0  North"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# filter rows where Region is 'North'\n",
+    "sales_data[sales_data['Region'] == 'North']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "6f2499ea",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.463616Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.463021Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.473842Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.473104Z"
+    },
+    "papermill": {
+     "duration": 0.022076,
+     "end_time": "2025-11-21T04:45:40.475134",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.453058",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2023-01-05</td>\n",
+       "      <td>B</td>\n",
+       "      <td>26.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>869.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>2023-01-07</td>\n",
+       "      <td>A</td>\n",
+       "      <td>16.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>936.0</td>\n",
+       "      <td>East</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>2023-01-10</td>\n",
+       "      <td>A</td>\n",
+       "      <td>22.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>834.0</td>\n",
+       "      <td>West</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>10</th>\n",
+       "      <td>2023-01-11</td>\n",
+       "      <td>B</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>842.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>14</th>\n",
+       "      <td>2023-01-15</td>\n",
+       "      <td>A</td>\n",
+       "      <td>47.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>893.0</td>\n",
+       "      <td>West</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         Date Category  Value   Product  Sales Region\n",
+       "4  2023-01-05        B   26.0  Product3  869.0  North\n",
+       "6  2023-01-07        A   16.0  Product1  936.0   East\n",
+       "9  2023-01-10        A   22.0  Product2  834.0   West\n",
+       "10 2023-01-11        B    7.0  Product1  842.0  North\n",
+       "14 2023-01-15        A   47.0  Product2  893.0   West"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# select top sales i.e sales > 800\n",
+    "\n",
+    "sales_data[sales_data['Sales'] > 800].head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "30bfa163",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.495255Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.494632Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.506321Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.505451Z"
+    },
+    "papermill": {
+     "duration": 0.023015,
+     "end_time": "2025-11-21T04:45:40.507701",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.484686",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>49</th>\n",
+       "      <td>2023-02-19</td>\n",
+       "      <td>C</td>\n",
+       "      <td>11.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>708.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>48</th>\n",
+       "      <td>2023-02-18</td>\n",
+       "      <td>C</td>\n",
+       "      <td>65.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>182.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>47</th>\n",
+       "      <td>2023-02-17</td>\n",
+       "      <td>B</td>\n",
+       "      <td>69.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>143.0</td>\n",
+       "      <td>West</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>46</th>\n",
+       "      <td>2023-02-16</td>\n",
+       "      <td>B</td>\n",
+       "      <td>6.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>938.0</td>\n",
+       "      <td>South</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>45</th>\n",
+       "      <td>2023-02-15</td>\n",
+       "      <td>B</td>\n",
+       "      <td>99.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>599.0</td>\n",
+       "      <td>West</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         Date Category  Value   Product  Sales Region\n",
+       "49 2023-02-19        C   11.0  Product3  708.0  North\n",
+       "48 2023-02-18        C   65.0  Product3  182.0  North\n",
+       "47 2023-02-17        B   69.0  Product3  143.0   West\n",
+       "46 2023-02-16        B    6.0  Product1  938.0  South\n",
+       "45 2023-02-15        B   99.0  Product2  599.0   West"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# sort the dataset by date in descending order\n",
+    "\n",
+    "sorted_df = sales_data.sort_values(by='Date', ascending=False)\n",
+    "sorted_df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "f8820f5c",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.527465Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.526721Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.531787Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.530911Z"
+    },
+    "papermill": {
+     "duration": 0.016474,
+     "end_time": "2025-11-21T04:45:40.533163",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.516689",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "557.1304347826087\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(sales_data['Sales'].mean())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "181d9ac2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.553317Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.553024Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.566284Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.565466Z"
+    },
+    "papermill": {
+     "duration": 0.025163,
+     "end_time": "2025-11-21T04:45:40.567666",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.542503",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>49</th>\n",
+       "      <td>2023-02-19</td>\n",
+       "      <td>C</td>\n",
+       "      <td>11.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>708.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>48</th>\n",
+       "      <td>2023-02-18</td>\n",
+       "      <td>C</td>\n",
+       "      <td>65.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>182.0</td>\n",
+       "      <td>North</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>47</th>\n",
+       "      <td>2023-02-17</td>\n",
+       "      <td>B</td>\n",
+       "      <td>69.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>143.0</td>\n",
+       "      <td>West</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>46</th>\n",
+       "      <td>2023-02-16</td>\n",
+       "      <td>B</td>\n",
+       "      <td>6.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>938.0</td>\n",
+       "      <td>South</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>45</th>\n",
+       "      <td>2023-02-15</td>\n",
+       "      <td>B</td>\n",
+       "      <td>99.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>599.0</td>\n",
+       "      <td>West</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         Date Category  Value   Product  Sales Region\n",
+       "49 2023-02-19        C   11.0  Product3  708.0  North\n",
+       "48 2023-02-18        C   65.0  Product3  182.0  North\n",
+       "47 2023-02-17        B   69.0  Product3  143.0   West\n",
+       "46 2023-02-16        B    6.0  Product1  938.0  South\n",
+       "45 2023-02-15        B   99.0  Product2  599.0   West"
+      ]
+     },
+     "execution_count": 26,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# fill missing data\n",
+    "sales_data['Sales'] = sales_data['Sales'].fillna(sales_data['Sales'].mean())\n",
+    "sales_data['Value'] = sales_data['Value'].fillna(sales_data['Value'].mean())\n",
+    "sales_data.sort_values(by='Date', ascending=False).head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9a959288",
+   "metadata": {
+    "papermill": {
+     "duration": 0.0092,
+     "end_time": "2025-11-21T04:45:40.586241",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.577041",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Grouping and Aggregation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "4b1ab710",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.605782Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.605472Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.617648Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.616894Z"
+    },
+    "papermill": {
+     "duration": 0.023731,
+     "end_time": "2025-11-21T04:45:40.618970",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.595239",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Region\n",
+       "East     42.307692\n",
+       "North    40.226306\n",
+       "South    62.000000\n",
+       "West     61.041371\n",
+       "Name: Value, dtype: float64"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# grouping and aggregation\n",
+    "sales_data.groupby('Region')['Value'].mean()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "02a3af9f",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.638903Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.638601Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.648102Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.647205Z"
+    },
+    "papermill": {
+     "duration": 0.021208,
+     "end_time": "2025-11-21T04:45:40.649557",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.628349",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Category\n",
+       "A    949.0\n",
+       "B    942.0\n",
+       "C    992.0\n",
+       "Name: Sales, dtype: float64"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sales_data.groupby('Category')['Sales'].max()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "a05397f9",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.669848Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.669275Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.679749Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.678835Z"
+    },
+    "papermill": {
+     "duration": 0.022297,
+     "end_time": "2025-11-21T04:45:40.681136",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.658839",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Category\n",
+       "A     8527.00000\n",
+       "B     8539.26087\n",
+       "C    10790.26087\n",
+       "Name: Sales, dtype: float64"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sales_data.groupby('Category')['Sales'].sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "2caa14df",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.701583Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.701268Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.708499Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.707624Z"
+    },
+    "papermill": {
+     "duration": 0.019257,
+     "end_time": "2025-11-21T04:45:40.709855",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.690598",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Product\n",
+       "Product1     9180.130435\n",
+       "Product2     8488.260870\n",
+       "Product3    10188.130435\n",
+       "Name: Sales, dtype: float64"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sales_data.groupby('Product')['Sales'].sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "585c4e32",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.730408Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.730093Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.741182Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.740472Z"
+    },
+    "papermill": {
+     "duration": 0.023087,
+     "end_time": "2025-11-21T04:45:40.742671",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.719584",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Total_Sales</th>\n",
+       "      <th>Average_Sales</th>\n",
+       "      <th>Count_Sales</th>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>Product</th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "      <th></th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>Product1</th>\n",
+       "      <td>9180.130435</td>\n",
+       "      <td>573.758152</td>\n",
+       "      <td>16</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>Product2</th>\n",
+       "      <td>8488.260870</td>\n",
+       "      <td>565.884058</td>\n",
+       "      <td>15</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>Product3</th>\n",
+       "      <td>10188.130435</td>\n",
+       "      <td>536.217391</td>\n",
+       "      <td>19</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "           Total_Sales  Average_Sales  Count_Sales\n",
+       "Product                                           \n",
+       "Product1   9180.130435     573.758152           16\n",
+       "Product2   8488.260870     565.884058           15\n",
+       "Product3  10188.130435     536.217391           19"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# multi-aggregation\n",
+    "sales_data.groupby('Product')['Sales'].agg(['sum','mean','count']).rename(columns={\"sum\": \"Total_Sales\", \"mean\": \"Average_Sales\", \"count\": \"Count_Sales\"})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "id": "9a4818c0",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.763820Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.763504Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.778054Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.777000Z"
+    },
+    "papermill": {
+     "duration": 0.026881,
+     "end_time": "2025-11-21T04:45:40.779497",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.752616",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "                     Date      Value   Product Region\n",
+      "Sales Category                                       \n",
+      "108.0 C        2023-01-18  51.744681  Product1   West\n",
+      "110.0 B        2023-01-02  39.000000  Product3  North\n",
+      "143.0 B        2023-02-17  69.000000  Product3   West\n",
+      "155.0 A        2023-02-09  62.000000  Product1   West\n",
+      "164.0 A        2023-02-12  93.000000  Product3   West\n"
+     ]
+    }
+   ],
+   "source": [
+    "# group by multiple column\n",
+    "print(sales_data.groupby(['Sales','Category']).first().head())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "b12d4a3a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.800339Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.799790Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.816290Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.815469Z"
+    },
+    "papermill": {
+     "duration": 0.02846,
+     "end_time": "2025-11-21T04:45:40.817622",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.789162",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "      <th>Sales_pct_of_category</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2023-01-01</td>\n",
+       "      <td>A</td>\n",
+       "      <td>28.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>754.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>8.842500</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2023-01-02</td>\n",
+       "      <td>B</td>\n",
+       "      <td>39.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>110.0</td>\n",
+       "      <td>North</td>\n",
+       "      <td>1.288168</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2023-01-03</td>\n",
+       "      <td>C</td>\n",
+       "      <td>32.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>398.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>3.688511</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2023-01-04</td>\n",
+       "      <td>B</td>\n",
+       "      <td>8.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>522.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>6.112941</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2023-01-05</td>\n",
+       "      <td>B</td>\n",
+       "      <td>26.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>869.0</td>\n",
+       "      <td>North</td>\n",
+       "      <td>10.176525</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "        Date Category  Value   Product  Sales Region  Sales_pct_of_category\n",
+       "0 2023-01-01        A   28.0  Product1  754.0   East               8.842500\n",
+       "1 2023-01-02        B   39.0  Product3  110.0  North               1.288168\n",
+       "2 2023-01-03        C   32.0  Product2  398.0   East               3.688511\n",
+       "3 2023-01-04        B    8.0  Product1  522.0   East               6.112941\n",
+       "4 2023-01-05        B   26.0  Product3  869.0  North              10.176525"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# data Transformation, percentage contribution of each product’s Sales\n",
+    "sales_data['Sales_pct_of_category'] = sales_data.groupby('Category')['Sales'].transform(lambda x: x / x.sum() * 100)\n",
+    "sales_data.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "id": "8924c94b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.839378Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.838466Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.851938Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.851103Z"
+    },
+    "papermill": {
+     "duration": 0.025777,
+     "end_time": "2025-11-21T04:45:40.853338",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.827561",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "      <th>Sales_pct_of_category</th>\n",
+       "      <th>Sales_diff_from_category_avg</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2023-01-01</td>\n",
+       "      <td>A</td>\n",
+       "      <td>28.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>754.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>8.842500</td>\n",
+       "      <td>144.928571</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2023-01-02</td>\n",
+       "      <td>B</td>\n",
+       "      <td>39.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>110.0</td>\n",
+       "      <td>North</td>\n",
+       "      <td>1.288168</td>\n",
+       "      <td>-459.284058</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2023-01-03</td>\n",
+       "      <td>C</td>\n",
+       "      <td>32.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>398.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>3.688511</td>\n",
+       "      <td>-115.821946</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2023-01-04</td>\n",
+       "      <td>B</td>\n",
+       "      <td>8.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>522.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>6.112941</td>\n",
+       "      <td>-47.284058</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2023-01-05</td>\n",
+       "      <td>B</td>\n",
+       "      <td>26.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>869.0</td>\n",
+       "      <td>North</td>\n",
+       "      <td>10.176525</td>\n",
+       "      <td>299.715942</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "        Date Category  Value   Product  Sales Region  Sales_pct_of_category  \\\n",
+       "0 2023-01-01        A   28.0  Product1  754.0   East               8.842500   \n",
+       "1 2023-01-02        B   39.0  Product3  110.0  North               1.288168   \n",
+       "2 2023-01-03        C   32.0  Product2  398.0   East               3.688511   \n",
+       "3 2023-01-04        B    8.0  Product1  522.0   East               6.112941   \n",
+       "4 2023-01-05        B   26.0  Product3  869.0  North              10.176525   \n",
+       "\n",
+       "   Sales_diff_from_category_avg  \n",
+       "0                    144.928571  \n",
+       "1                   -459.284058  \n",
+       "2                   -115.821946  \n",
+       "3                    -47.284058  \n",
+       "4                    299.715942  "
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "#  how much each Sale differs from the Category average?\n",
+    "sales_data['Sales_diff_from_category_avg'] = sales_data['Sales'] - sales_data.groupby('Category')['Sales'].transform('mean')\n",
+    "sales_data.head(5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "8d8065a2",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.875212Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.874417Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.888939Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.888109Z"
+    },
+    "papermill": {
+     "duration": 0.026702,
+     "end_time": "2025-11-21T04:45:40.890229",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.863527",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "      <th>Sales_pct_of_category</th>\n",
+       "      <th>Sales_diff_from_category_avg</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2023-01-03</td>\n",
+       "      <td>C</td>\n",
+       "      <td>32.000000</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>398.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>3.688511</td>\n",
+       "      <td>-115.821946</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>2023-01-08</td>\n",
+       "      <td>C</td>\n",
+       "      <td>89.000000</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>488.0</td>\n",
+       "      <td>West</td>\n",
+       "      <td>4.522597</td>\n",
+       "      <td>-25.821946</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>2023-01-09</td>\n",
+       "      <td>C</td>\n",
+       "      <td>37.000000</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>772.0</td>\n",
+       "      <td>West</td>\n",
+       "      <td>7.154600</td>\n",
+       "      <td>258.178054</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>15</th>\n",
+       "      <td>2023-01-16</td>\n",
+       "      <td>C</td>\n",
+       "      <td>51.744681</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>895.0</td>\n",
+       "      <td>North</td>\n",
+       "      <td>8.294517</td>\n",
+       "      <td>381.178054</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>16</th>\n",
+       "      <td>2023-01-17</td>\n",
+       "      <td>C</td>\n",
+       "      <td>93.000000</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>511.0</td>\n",
+       "      <td>South</td>\n",
+       "      <td>4.735752</td>\n",
+       "      <td>-2.821946</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         Date Category      Value   Product  Sales Region  \\\n",
+       "2  2023-01-03        C  32.000000  Product2  398.0   East   \n",
+       "7  2023-01-08        C  89.000000  Product1  488.0   West   \n",
+       "8  2023-01-09        C  37.000000  Product3  772.0   West   \n",
+       "15 2023-01-16        C  51.744681  Product1  895.0  North   \n",
+       "16 2023-01-17        C  93.000000  Product2  511.0  South   \n",
+       "\n",
+       "    Sales_pct_of_category  Sales_diff_from_category_avg  \n",
+       "2                3.688511                   -115.821946  \n",
+       "7                4.522597                    -25.821946  \n",
+       "8                7.154600                    258.178054  \n",
+       "15               8.294517                    381.178054  \n",
+       "16               4.735752                     -2.821946  "
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Filter categories with total Sales > 150000\n",
+    "filtered_df = sales_data.groupby('Category').filter(lambda x: x['Sales'].sum() > 9000)\n",
+    "\n",
+    "filtered_df.head(5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "id": "4a6ba15d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.912240Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.911628Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.927238Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.926528Z"
+    },
+    "papermill": {
+     "duration": 0.028156,
+     "end_time": "2025-11-21T04:45:40.928640",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.900484",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "      <th>Sales_pct_of_category</th>\n",
+       "      <th>Sales_diff_from_category_avg</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>2023-01-06</td>\n",
+       "      <td>B</td>\n",
+       "      <td>54.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>192.000000</td>\n",
+       "      <td>West</td>\n",
+       "      <td>2.248438</td>\n",
+       "      <td>-377.284058</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>2023-01-08</td>\n",
+       "      <td>C</td>\n",
+       "      <td>89.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>488.000000</td>\n",
+       "      <td>West</td>\n",
+       "      <td>4.522597</td>\n",
+       "      <td>-25.821946</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>2023-01-09</td>\n",
+       "      <td>C</td>\n",
+       "      <td>37.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>772.000000</td>\n",
+       "      <td>West</td>\n",
+       "      <td>7.154600</td>\n",
+       "      <td>258.178054</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>2023-01-10</td>\n",
+       "      <td>A</td>\n",
+       "      <td>22.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>834.000000</td>\n",
+       "      <td>West</td>\n",
+       "      <td>9.780697</td>\n",
+       "      <td>224.928571</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>11</th>\n",
+       "      <td>2023-01-12</td>\n",
+       "      <td>B</td>\n",
+       "      <td>60.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>557.130435</td>\n",
+       "      <td>West</td>\n",
+       "      <td>6.524340</td>\n",
+       "      <td>-12.153623</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         Date Category  Value   Product       Sales Region  \\\n",
+       "5  2023-01-06        B   54.0  Product3  192.000000   West   \n",
+       "7  2023-01-08        C   89.0  Product1  488.000000   West   \n",
+       "8  2023-01-09        C   37.0  Product3  772.000000   West   \n",
+       "9  2023-01-10        A   22.0  Product2  834.000000   West   \n",
+       "11 2023-01-12        B   60.0  Product2  557.130435   West   \n",
+       "\n",
+       "    Sales_pct_of_category  Sales_diff_from_category_avg  \n",
+       "5                2.248438                   -377.284058  \n",
+       "7                4.522597                    -25.821946  \n",
+       "8                7.154600                    258.178054  \n",
+       "9                9.780697                    224.928571  \n",
+       "11               6.524340                    -12.153623  "
+      ]
+     },
+     "execution_count": 36,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# filter regions with mean value over 50\n",
+    "filtered_region_over_100 = sales_data.groupby('Region').filter(lambda x: x['Value'].mean() >50)\n",
+    "filtered_region_over_100.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "adcf1b09",
+   "metadata": {
+    "papermill": {
+     "duration": 0.010196,
+     "end_time": "2025-11-21T04:45:40.949876",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.939680",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Date Handling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "90e3b478",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:40.971918Z",
+     "iopub.status.busy": "2025-11-21T04:45:40.971303Z",
+     "iopub.status.idle": "2025-11-21T04:45:40.987135Z",
+     "shell.execute_reply": "2025-11-21T04:45:40.986415Z"
+    },
+    "papermill": {
+     "duration": 0.028491,
+     "end_time": "2025-11-21T04:45:40.988422",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.959931",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Date</th>\n",
+       "      <th>Category</th>\n",
+       "      <th>Value</th>\n",
+       "      <th>Product</th>\n",
+       "      <th>Sales</th>\n",
+       "      <th>Region</th>\n",
+       "      <th>Sales_pct_of_category</th>\n",
+       "      <th>Sales_diff_from_category_avg</th>\n",
+       "      <th>Year</th>\n",
+       "      <th>Month</th>\n",
+       "      <th>Day</th>\n",
+       "      <th>Month_Name</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2023-01-01</td>\n",
+       "      <td>A</td>\n",
+       "      <td>28.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>754.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>8.842500</td>\n",
+       "      <td>144.928571</td>\n",
+       "      <td>2023</td>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "      <td>January</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2023-01-02</td>\n",
+       "      <td>B</td>\n",
+       "      <td>39.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>110.0</td>\n",
+       "      <td>North</td>\n",
+       "      <td>1.288168</td>\n",
+       "      <td>-459.284058</td>\n",
+       "      <td>2023</td>\n",
+       "      <td>1</td>\n",
+       "      <td>2</td>\n",
+       "      <td>January</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2023-01-03</td>\n",
+       "      <td>C</td>\n",
+       "      <td>32.0</td>\n",
+       "      <td>Product2</td>\n",
+       "      <td>398.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>3.688511</td>\n",
+       "      <td>-115.821946</td>\n",
+       "      <td>2023</td>\n",
+       "      <td>1</td>\n",
+       "      <td>3</td>\n",
+       "      <td>January</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2023-01-04</td>\n",
+       "      <td>B</td>\n",
+       "      <td>8.0</td>\n",
+       "      <td>Product1</td>\n",
+       "      <td>522.0</td>\n",
+       "      <td>East</td>\n",
+       "      <td>6.112941</td>\n",
+       "      <td>-47.284058</td>\n",
+       "      <td>2023</td>\n",
+       "      <td>1</td>\n",
+       "      <td>4</td>\n",
+       "      <td>January</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2023-01-05</td>\n",
+       "      <td>B</td>\n",
+       "      <td>26.0</td>\n",
+       "      <td>Product3</td>\n",
+       "      <td>869.0</td>\n",
+       "      <td>North</td>\n",
+       "      <td>10.176525</td>\n",
+       "      <td>299.715942</td>\n",
+       "      <td>2023</td>\n",
+       "      <td>1</td>\n",
+       "      <td>5</td>\n",
+       "      <td>January</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "        Date Category  Value   Product  Sales Region  Sales_pct_of_category  \\\n",
+       "0 2023-01-01        A   28.0  Product1  754.0   East               8.842500   \n",
+       "1 2023-01-02        B   39.0  Product3  110.0  North               1.288168   \n",
+       "2 2023-01-03        C   32.0  Product2  398.0   East               3.688511   \n",
+       "3 2023-01-04        B    8.0  Product1  522.0   East               6.112941   \n",
+       "4 2023-01-05        B   26.0  Product3  869.0  North              10.176525   \n",
+       "\n",
+       "   Sales_diff_from_category_avg  Year  Month  Day Month_Name  \n",
+       "0                    144.928571  2023      1    1    January  \n",
+       "1                   -459.284058  2023      1    2    January  \n",
+       "2                   -115.821946  2023      1    3    January  \n",
+       "3                    -47.284058  2023      1    4    January  \n",
+       "4                    299.715942  2023      1    5    January  "
+      ]
+     },
+     "execution_count": 37,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# total monthly sales\n",
+    "sales_data['Year'] = sales_data['Date'].dt.year\n",
+    "sales_data['Month'] = sales_data['Date'].dt.month\n",
+    "sales_data['Day'] = sales_data['Date'].dt.day\n",
+    "\n",
+    "# use name of the month\n",
+    "sales_data['Month_Name'] = sales_data['Date'].dt.strftime('%B')\n",
+    "sales_data.head()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "id": "41d29c62",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:41.010530Z",
+     "iopub.status.busy": "2025-11-21T04:45:41.010196Z",
+     "iopub.status.idle": "2025-11-21T04:45:41.021251Z",
+     "shell.execute_reply": "2025-11-21T04:45:41.020416Z"
+    },
+    "papermill": {
+     "duration": 0.023764,
+     "end_time": "2025-11-21T04:45:41.022565",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:40.998801",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Year</th>\n",
+       "      <th>Month_Name</th>\n",
+       "      <th>Sales</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2023</td>\n",
+       "      <td>February</td>\n",
+       "      <td>8954.391304</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2023</td>\n",
+       "      <td>January</td>\n",
+       "      <td>18902.130435</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Year Month_Name         Sales\n",
+       "0  2023   February   8954.391304\n",
+       "1  2023    January  18902.130435"
+      ]
+     },
+     "execution_count": 38,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Total monthly sales\n",
+    "monthly_sales = sales_data.groupby(['Year', 'Month_Name'])['Sales'].sum().reset_index()\n",
+    "monthly_sales\n",
+    "\n",
+    "# if this Date was the index\n",
+    "# df = df.set_index('Date')\n",
+    "# monthly_sales = df['Sales'].resample('M').sum()\n",
+    "# print(monthly_sales)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "512ca79e",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:41.045176Z",
+     "iopub.status.busy": "2025-11-21T04:45:41.044551Z",
+     "iopub.status.idle": "2025-11-21T04:45:41.054226Z",
+     "shell.execute_reply": "2025-11-21T04:45:41.053575Z"
+    },
+    "papermill": {
+     "duration": 0.022431,
+     "end_time": "2025-11-21T04:45:41.055476",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:41.033045",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Year     2023.000000\n",
+       "Month       1.000000\n",
+       "Value    1562.234043\n",
+       "Name: 0, dtype: float64"
+      ]
+     },
+     "execution_count": 39,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# maximum monthly value\n",
+    "monthly_value = sales_data.groupby(['Year', 'Month'])['Value'].sum().reset_index()\n",
+    "max_month = monthly_value.loc[monthly_value['Value'].idxmax()]\n",
+    "max_month"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8dc1fba8",
+   "metadata": {
+    "papermill": {
+     "duration": 0.01083,
+     "end_time": "2025-11-21T04:45:41.076948",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:41.066118",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "# Visualization practice"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "id": "92d74904",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:41.099841Z",
+     "iopub.status.busy": "2025-11-21T04:45:41.098997Z",
+     "iopub.status.idle": "2025-11-21T04:45:42.794736Z",
+     "shell.execute_reply": "2025-11-21T04:45:42.794010Z"
+    },
+    "papermill": {
+     "duration": 1.708872,
+     "end_time": "2025-11-21T04:45:42.796275",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:41.087403",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# implot packages\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sn"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "f0620e87",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-11-21T04:45:42.819549Z",
+     "iopub.status.busy": "2025-11-21T04:45:42.818722Z",
+     "iopub.status.idle": "2025-11-21T04:45:42.822728Z",
+     "shell.execute_reply": "2025-11-21T04:45:42.821882Z"
+    },
+    "papermill": {
+     "duration": 0.017184,
+     "end_time": "2025-11-21T04:45:42.824217",
+     "exception": false,
+     "start_time": "2025-11-21T04:45:42.807033",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# line plot"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "datasetId": 4707773,
+     "sourceId": 7995894,
+     "sourceType": "datasetVersion"
+    },
+    {
+     "datasetId": 8794753,
+     "sourceId": 13811907,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "dockerImageVersionId": 31192,
+   "isGpuEnabled": false,
+   "isInternetEnabled": false,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.13"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 9.971182,
+   "end_time": "2025-11-21T04:45:43.455106",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2025-11-21T04:45:33.483924",
+   "version": "2.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
