@@ -1,5 +1,5 @@
 # Kaggle-work
-This repo contains the work i have on my kaggle page
+This repo contains the work that I have on my kaggle page
 
 # It contains the following categories
 ## Data cleaning and preprocessing
